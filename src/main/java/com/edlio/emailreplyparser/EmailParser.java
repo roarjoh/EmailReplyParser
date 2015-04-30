@@ -29,8 +29,15 @@ public class EmailParser {
 	public EmailParser() {
 		compiledQuoteHeaderPatterns = new ArrayList<Pattern>();
 		quoteHeadersRegex.add("^(On\\s(.{1,500})wrote:)");
+
+        quoteHeadersRegex.add("^((Den\\s){0,1}(.{1,500})(skrev|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4})).*?)");
+		quoteHeadersRegex.add("^([0-9]{4}\\/|-[0-9]{1,2}\\/|-[0-9]{1,2}.*?)");
 		quoteHeadersRegex.add("From:[^\\n]+\\n?([^\\n]+\\n?){0,2}To:[^\\n]+\\n?([^\\n]+\\n?){0,2}Subject:[^\\n]+");
+		quoteHeadersRegex.add("Fra:[^\\n]+\\n?([^\\n]+\\n?){0,2}Til:[^\\n]+\\n?([^\\n]+\\n?){0,2}Emne:[^\\n]+");
 		quoteHeadersRegex.add("To:[^\\n]+\\n?([^\\n]+\\n?){0,2}From:[^\\n]+\\n?([^\\n]+\\n?){0,2}Subject:[^\\n]+");
+		quoteHeadersRegex.add("Til:[^\\n]+\\n?([^\\n]+\\n?){0,2}Fra:[^\\n]+\\n?([^\\n]+\\n?){0,2}Emne:[^\\n]+");
+		quoteHeadersRegex.add("^-----Opprinnelig melding-----");
+
 		maxParagraphLines = 6;
 		maxNumCharsEachLine = 200;
 	}
@@ -45,8 +52,8 @@ public class EmailParser {
 		compileQuoteHeaderRegexes();
 		
 		// Normalize line endings
-		emailText.replace("\r\n", "\n");
-		
+		emailText = emailText.replace("\r\n", "\n");
+
 		FragmentDTO fragment = null;
 		
 		// Split body to multiple lines.
