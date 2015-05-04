@@ -9,7 +9,7 @@ public class Email {
 	private List<Fragment> fragments = new ArrayList<Fragment>();
 	
 	public Email(List<Fragment> fragments) {
-		this.fragments = fragments;
+		this.fragments.addAll(fragments);
 	}
 	
 	public List<Fragment> getFragments() {

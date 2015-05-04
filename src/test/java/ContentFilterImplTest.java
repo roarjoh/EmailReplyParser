@@ -34,7 +34,7 @@ public class ContentFilterImplTest {
     private static ContentFilter contentFilter;
     @BeforeClass
     public static void init() {
-        contentFilter = new WrappingContentFilter();
+        contentFilter = new EmailReplyParserWrappingContentFilter();
     }
 
     @Test
@@ -1609,7 +1609,7 @@ public class ContentFilterImplTest {
                 "</body>\n" +
                 "</html>\n";
 
-        String expected = "Hei.\nJeg er her vanligvis til 16.30, men til uka kan jeg være litt lenger på tirsdag eller torsdag. Mandag kan jeg være her til ca 17.00.\nMed vennlig hilsen\nTest Testesen\nx";
+        String expected = "Hei.\nJeg er her vanligvis til 16.30, men til uka kan jeg være litt lenger på tirsdag eller torsdag. Mandag kan jeg være her til ca 17.00.\n\nMed vennlig hilsen\nTest Testesen\nx\nTlf: 0\nMobil: 0\nwww.x.no<http://www.x.no>\nx\nx!";
 
         String filteredContents = contentFilter.filterContent(html, plainText);
 
@@ -3281,7 +3281,7 @@ public class ContentFilterImplTest {
                 "Ring meg når du er utenfor på tlf 999 99 999 så kommer jeg ut!"));
     }
 
-    private static final class WrappingContentFilter implements ContentFilter {
+    private static final class EmailReplyParserWrappingContentFilter implements ContentFilter {
         public boolean canHandle(boolean isReply, String html, String plainText) {
             return true;
         }
